@@ -6,6 +6,10 @@ type User {
 
 type Query {
     users: [User!]!
+    user(id: ID!): User
+    userByName(firstName: String!, lastName: String!): User
+    usersByFirstName(firstName: String!): [User!]!
+    usersByLastName(lastName: String!): [User!]!
 }
 
 type Mutation {

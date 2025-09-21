@@ -38,4 +38,24 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.deleteById(id);
     }
+
+    @Override
+    public User getUserById(UUID id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public User getUserByName(String firstName, String lastName) {
+        return userRepository.findByFirstNameAndLastName(firstName, lastName);
+    }
+
+    @Override
+    public List<User> getUsersByFirstName(String firstName) {
+        return userRepository.findByFirstName(firstName);
+    }
+
+    @Override
+    public List<User> getUsersByLastName(String lastName) {
+        return userRepository.findByLastName(lastName);
+    }
 }
