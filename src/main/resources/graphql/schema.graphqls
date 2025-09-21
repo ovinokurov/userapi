@@ -7,3 +7,8 @@ type User {
 type Query {
     users: [User!]!
 }
+
+type Mutation {
+    createUser(firstName: String!, lastName: String!): User!
+    deleteUser(id: ID!): Boolean!
+}
