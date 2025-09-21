@@ -1,4 +1,3 @@
-
 ## Spring Boot Project Initialization
 
 The project was initialized using [Spring Initializr](https://start.spring.io/) with the following settings:
@@ -137,6 +136,38 @@ This document outlines all the steps taken to create the `userapi` project from 
 
 ---
 
+## 9. GraphQL Integration
+
+- **Dependency Added**: `spring-boot-starter-graphql` in `pom.xml`.
+- **GraphQL Endpoint**: Accessible at `http://localhost:8080/graphql`.
+- **Schema Location**: Defined in `src/main/resources/graphql/schema.graphqls`.
+- **Example Query**:
+  ```graphql
+  query {
+    users {
+      id
+      firstName
+      lastName
+    }
+  }
+  ```
+- **How to Test**:
+    - Use Altair or GraphQL Playground:
+        - Set endpoint to `http://localhost:8080/graphql`
+        - Paste the query and execute.
+    - Or use Postman:
+        - Method: POST
+        - URL: `http://localhost:8080/graphql`
+        - Body (JSON):
+          ```json
+          {
+            "query": "{ users { id firstName lastName } }"
+          }
+          ```
+- **Note**: No built-in UI like Swagger for GraphQL in Spring Boot 3.x; use external tools for testing and exploration.
+
+---
+
 ## Running the Project
 
 1. Start Docker:
@@ -161,3 +192,4 @@ A full-stack backend Spring Boot application with PostgreSQL and Kafka integrati
 - Kafka Event Publishing and Viewing
 - Full Swagger Documentation
 - Unit Testing with JUnit and Mockito
+- GraphQL API for flexible data querying

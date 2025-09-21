@@ -111,3 +111,44 @@ java -jar target/userapi-0.0.1-SNAPSHOT.jar
 ## Author
 
 Built by Oleg Vinokurov as part of a learning and integration exercise with Spring Boot + Kafka.
+
+---
+
+## GraphQL Integration
+
+This project includes a GraphQL API using Spring Boot Starter GraphQL.
+
+### Features
+- Query users with flexible selection of fields.
+- Integrated with the existing PostgreSQL database and JPA entities.
+
+### Example Query
+You can fetch all users with:
+
+```graphql
+query {
+  users {
+    id
+    firstName
+    lastName
+  }
+}
+```
+
+### How to Test
+- Use tools like **Altair** or **GraphQL Playground**.
+- Set the endpoint to: `http://localhost:8080/graphql`
+- Paste your query in the editor and execute.
+
+Alternatively, you can use **Postman**:
+- Set method to `POST`
+- URL: `http://localhost:8080/graphql`
+- Body (JSON):
+  ```json
+  {
+    "query": "{ users { id firstName lastName } }"
+  }
+  ```
+
+### Documentation
+GraphQL schema is auto-generated and can be explored in Altair or similar tools.
