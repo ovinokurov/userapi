@@ -1,4 +1,4 @@
-package com.example.userapi;
+package com.example.userapi.graphql;
 
 import com.example.userapi.model.User;
 import com.example.userapi.service.UserService;
