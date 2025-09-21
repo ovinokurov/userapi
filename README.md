@@ -1,13 +1,14 @@
-# User API with Kafka Integration
+# User API with Kafka and GraphQL Integration
 
-This is a Spring Boot-based RESTful API for managing users. It integrates with Apache Kafka to publish user-related events.
+This is a Spring Boot-based API for managing users, featuring both REST and GraphQL endpoints, and integrating with Apache Kafka to publish user-related events.
 
 ## Features
 
-- Create and retrieve users using a RESTful API
+- Create and retrieve users using RESTful API
+- Query users with flexible selection of fields using GraphQL
 - Kafka integration to send user creation events
 - In-memory message storage for consumed Kafka messages
-- Swagger UI for API exploration
+- Swagger UI for REST API exploration
 - Unit tests using JUnit and Mockito
 - Dockerized Kafka + Zookeeper setup for local development
 
@@ -20,6 +21,7 @@ This is a Spring Boot-based RESTful API for managing users. It integrates with A
 - Spring Data JPA
 - PostgreSQL (optional: currently not integrated)
 - Apache Kafka
+- GraphQL (via Spring Boot Starter GraphQL)
 - Docker / Docker Compose
 - Swagger UI (via Springdoc OpenAPI)
 - JUnit 5, Mockito
@@ -34,10 +36,15 @@ userapi/
 │   ├── main/
 │   │   ├── java/com/example/userapi/
 │   │   │   ├── controller/       # REST Controllers
+│   │   │   ├── graphql/          # GraphQL Query Resolvers
 │   │   │   ├── kafka/            # Kafka Producer/Consumer/Storage
 │   │   │   ├── model/            # Data Models (User)
 │   │   │   ├── repository/       # Spring JPA Repositories
 │   │   │   └── service/          # Service layer (User + KafkaMessage)
+│   ├── resources/
+│   │   ├── application.properties
+│   │   └── graphql/
+│   │       └── schema.graphqls   # GraphQL schema definition
 │   ├── test/                     # Unit tests
 ├── docker-compose.yml           # Kafka + Zookeeper setup
 ├── pom.xml                      # Maven build file
@@ -52,17 +59,74 @@ Once the application is running, visit:
 
 📚 **Swagger UI:** [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
-### UserController
+### REST Endpoints
+
+#### UserController
 - `GET /users` — Get all users
 - `POST /users` — Create a user
 - `DELETE /users/{id}` — Delete a user by ID
 
-### KafkaMessageController
+#### KafkaMessageController
 - `GET /kafka/messages` — Get all Kafka messages received
 
 ---
 
-## Running the Project with Docker Compose
+## GraphQL Integration
+
+This project includes a GraphQL API using Spring Boot Starter GraphQL for flexible data querying.
+
+### What is GraphQL?
+GraphQL is a query language for APIs that allows clients to request exactly the data they need, making APIs more efficient and flexible compared to REST.
+
+### Integration Details
+- **Dependency:** `spring-boot-starter-graphql` in `pom.xml`
+- **Schema Location:** `src/main/resources/graphql/schema.graphqls`
+- **Endpoint:** `http://localhost:8080/graphql`
+- **Resolvers:** Implemented in `src/main/java/com/example/userapi/graphql/`
+
+### Example Query
+Fetch all users:
+```graphql
+query {
+  users {
+    id
+    firstName
+    lastName
+  }
+}
+```
+
+### Example Mutation (if implemented)
+```graphql
+mutation {
+  createUser(input: { firstName: "John", lastName: "Doe" }) {
+    id
+    firstName
+    lastName
+  }
+}
+```
+
+### How to Test
+- Use tools like **Altair** or **GraphQL Playground**:
+  - Set the endpoint to: `http://localhost:8080/graphql`
+  - Paste your query in the editor and execute.
+- Alternatively, use **Postman**:
+  - Method: POST
+  - URL: `http://localhost:8080/graphql`
+  - Body (JSON):
+    ```json
+    {
+      "query": "{ users { id firstName lastName } }"
+    }
+    ```
+
+### Note
+Spring Boot 3.x does not provide a built-in GraphQL UI like Swagger. Use external tools for testing and exploration.
+
+---
+
+## Kafka Integration
 
 This project uses Kafka and Zookeeper locally via Docker.
 
@@ -110,45 +174,4 @@ java -jar target/userapi-0.0.1-SNAPSHOT.jar
 
 ## Author
 
-Built by Oleg Vinokurov as part of a learning and integration exercise with Spring Boot + Kafka.
-
----
-
-## GraphQL Integration
-
-This project includes a GraphQL API using Spring Boot Starter GraphQL.
-
-### Features
-- Query users with flexible selection of fields.
-- Integrated with the existing PostgreSQL database and JPA entities.
-
-### Example Query
-You can fetch all users with:
-
-```graphql
-query {
-  users {
-    id
-    firstName
-    lastName
-  }
-}
-```
-
-### How to Test
-- Use tools like **Altair** or **GraphQL Playground**.
-- Set the endpoint to: `http://localhost:8080/graphql`
-- Paste your query in the editor and execute.
-
-Alternatively, you can use **Postman**:
-- Set method to `POST`
-- URL: `http://localhost:8080/graphql`
-- Body (JSON):
-  ```json
-  {
-    "query": "{ users { id firstName lastName } }"
-  }
-  ```
-
-### Documentation
-GraphQL schema is auto-generated and can be explored in Altair or similar tools.
+Built by Oleg Vinokurov as part of a learning and integration exercise with Spring Boot, GraphQL, and Kafka.
