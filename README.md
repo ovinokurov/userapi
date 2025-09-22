@@ -107,19 +107,85 @@ mutation {
 }
 ```
 
+### Search Users with GraphQL
+
+You can search for users by ID, first name, last name, or both first and last name using the following queries:
+
+#### 1. Search by ID
+**Altair/GraphQL Playground:**
+```graphql
+query {
+  user(id: "<USER_ID>") {
+    id
+    firstName
+    lastName
+  }
+}
+```
+**Postman (JSON body):**
+```json
+{
+  "query": "{ user(id: \"<USER_ID>\") { id firstName lastName } }"
+}
+```
+
+#### 2. Search by First and Last Name
+**Altair/GraphQL Playground:**
+```graphql
+query {
+  userByName(firstName: "Oleg", lastName: "Vinokurov") {
+    id
+    firstName
+    lastName
+  }
+}
+```
+**Postman (JSON body):**
+```json
+{
+  "query": "{ userByName(firstName: \"Oleg\", lastName: \"Vinokurov\") { id firstName lastName } }"
+}
+```
+
+#### 3. Search by First Name Only
+**Altair/GraphQL Playground:**
+```graphql
+query {
+  usersByFirstName(firstName: "Oleg") {
+    id
+    firstName
+    lastName
+  }
+}
+```
+**Postman (JSON body):**
+```json
+{
+  "query": "{ usersByFirstName(firstName: \"Oleg\") { id firstName lastName } }"
+}
+```
+
+#### 4. Search by Last Name Only
+**Altair/GraphQL Playground:**
+```graphql
+query {
+  usersByLastName(lastName: "Vinokurov") {
+    id
+    firstName
+    lastName
+  }
+}
+```
+**Postman (JSON body):**
+```json
+{
+  "query": "{ usersByLastName(lastName: \"Vinokurov\") { id firstName lastName } }"
+}
+```
+
 ### How to Test
-- Use tools like **Altair** or **GraphQL Playground**:
-  - Set the endpoint to: `http://localhost:8080/graphql`
-  - Paste your query in the editor and execute.
-- Alternatively, use **Postman**:
-  - Method: POST
-  - URL: `http://localhost:8080/graphql`
-  - Body (JSON):
-    ```json
-    {
-      "query": "{ users { id firstName lastName } }"
-    }
-    ```
+- **Altair/GraphQL Playground:** Paste the query in the editor and execute.
+- **Postman:** Set method to POST, URL to `http://localhost:8080/graphql`, and paste the JSON body above.
 
 ### Note
 Spring Boot 3.x does not provide a built-in GraphQL UI like Swagger. Use external tools for testing and exploration.
